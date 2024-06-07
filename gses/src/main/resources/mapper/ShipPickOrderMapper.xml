@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="gs.com.gses.mapper.ShipPickOrderMapper">
+
+    <resultMap id="BaseResultMap" type="gs.com.gses.model.entity.ShipPickOrder">
+            <id property="id" column="Id" jdbcType="BIGINT"/>
+            <result property="warehouseid" column="WarehouseId" jdbcType="BIGINT"/>
+            <result property="shiporderid" column="ShipOrderId" jdbcType="BIGINT"/>
+            <result property="billtypeid" column="BillTypeId" jdbcType="BIGINT"/>
+            <result property="status" column="Status" jdbcType="INTEGER"/>
+            <result property="planpkgquantity" column="PlanPkgQuantity" jdbcType="DECIMAL"/>
+            <result property="allocatedpkgquantity" column="AllocatedPkgQuantity" jdbcType="DECIMAL"/>
+            <result property="movedpkgquantity" column="MovedPkgQuantity" jdbcType="DECIMAL"/>
+            <result property="creatorid" column="CreatorId" jdbcType="OTHER"/>
+            <result property="creatorname" column="CreatorName" jdbcType="VARCHAR"/>
+            <result property="lastmodifierid" column="LastModifierId" jdbcType="OTHER"/>
+            <result property="lastmodifiername" column="LastModifierName" jdbcType="VARCHAR"/>
+            <result property="creationtime" column="CreationTime" jdbcType="BIGINT"/>
+            <result property="lastmodificationtime" column="LastModificationTime" jdbcType="BIGINT"/>
+            <result property="shippickordercode" column="ShipPickOrderCode" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        Id,WarehouseId,ShipOrderId,
+        BillTypeId,Status,PlanPkgQuantity,
+        AllocatedPkgQuantity,MovedPkgQuantity,CreatorId,
+        CreatorName,LastModifierId,LastModifierName,
+        CreationTime,LastModificationTime,ShipPickOrderCode
+    </sql>
+</mapper>

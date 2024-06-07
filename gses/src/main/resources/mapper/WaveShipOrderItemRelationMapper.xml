@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="gs.com.gses.mapper.WaveShipOrderItemRelationMapper">
+
+    <resultMap id="BaseResultMap" type="gs.com.gses.model.entity.WaveShipOrderItemRelation">
+            <id property="id" column="Id" jdbcType="BIGINT"/>
+            <result property="shiporderitemid" column="ShipOrderItemId" jdbcType="BIGINT"/>
+            <result property="applyshiporderitemid" column="ApplyShipOrderItemId" jdbcType="BIGINT"/>
+            <result property="requirednumber" column="RequiredNumber" jdbcType="DECIMAL"/>
+            <result property="pickednumber" column="PickedNumber" jdbcType="DECIMAL"/>
+            <result property="creatorid" column="CreatorId" jdbcType="OTHER"/>
+            <result property="creatorname" column="CreatorName" jdbcType="VARCHAR"/>
+            <result property="lastmodifierid" column="LastModifierId" jdbcType="OTHER"/>
+            <result property="lastmodifiername" column="LastModifierName" jdbcType="VARCHAR"/>
+            <result property="creationtime" column="CreationTime" jdbcType="BIGINT"/>
+            <result property="lastmodificationtime" column="LastModificationTime" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        Id,ShipOrderItemId,ApplyShipOrderItemId,
+        RequiredNumber,PickedNumber,CreatorId,
+        CreatorName,LastModifierId,LastModifierName,
+        CreationTime,LastModificationTime
+    </sql>
+</mapper>
