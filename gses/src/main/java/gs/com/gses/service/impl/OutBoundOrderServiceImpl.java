@@ -78,6 +78,9 @@ public class OutBoundOrderServiceImpl implements OutBoundOrderService {
     private InventoryItemService inventoryItemService;
 
     @Autowired
+    private InventoryItemDetailService inventoryItemDetailService;
+
+    @Autowired
     private MaterialService materialService;
 
 
@@ -457,6 +460,11 @@ public class OutBoundOrderServiceImpl implements OutBoundOrderService {
     public boolean deleteShipOrderInfo() {
         IndexOperations indexOperations = elasticsearchRestTemplate.indexOps(ShipOrderInfo.class);
         return indexOperations.delete();
+    }
+
+    @Override
+    public void initFromDb() {
+
     }
 
     /**

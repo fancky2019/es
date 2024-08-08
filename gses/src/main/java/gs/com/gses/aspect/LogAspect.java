@@ -96,10 +96,11 @@ public class LogAspect {
     @Around(value = "pointCut()")
     public Object aroundMethod(ProceedingJoinPoint jp) throws Throwable {
 
-        //并发访问，加锁控制
-        RLock lock1 = redissonClient.getLock("operationLockKey");
-//       boolean re= lock1.tryLock();
-        lock1.tryLock(10, -1, TimeUnit.SECONDS);
+//        //并发访问，加锁控制
+//        RLock lock1 = redissonClient.getLock("operationLockKey");
+////       boolean re= lock1.tryLock();
+//        lock1.tryLock(10, -1, TimeUnit.SECONDS);
+
         String httpMethod = httpServletRequest.getMethod();
         ///sbp/demo/demoProductTest
         String uri = httpServletRequest.getRequestURI();

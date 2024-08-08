@@ -16,4 +16,6 @@ public interface OutBoundOrderService {
     void addBatch() throws Exception;
 
     boolean deleteShipOrderInfo() ;
+
+    void  initFromDb()  ;
 }
