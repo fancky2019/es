@@ -54,7 +54,7 @@ public class ShipOrderInfoController {
 
     @GetMapping("/getWmsTask")
     public MessageResult<WmsTask> getWmsTask() {
-        return MessageResult.success(wmsTaskService.test());
+        return MessageResult.success();
     }
 
     @RepeatPermission

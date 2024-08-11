@@ -7,64 +7,64 @@
     <resultMap id="BaseResultMap" type="gs.com.gses.model.entity.WmsTask">
             <id property="id" column="Id" jdbcType="BIGINT"/>
             <result property="whid" column="Whid" jdbcType="BIGINT"/>
-            <result property="relationorderitemid" column="RelationOrderItemId" jdbcType="BIGINT"/>
-            <result property="taskno" column="TaskNo" jdbcType="VARCHAR"/>
-            <result property="palletcode" column="PalletCode" jdbcType="VARCHAR"/>
-            <result property="materialid" column="MaterialId" jdbcType="BIGINT"/>
-            <result property="materialpropertyid" column="MaterialPropertyId" jdbcType="BIGINT"/>
-            <result property="workorderid" column="WorkOrderId" jdbcType="BIGINT"/>
-            <result property="xstatus" column="XStatus" jdbcType="INTEGER"/>
-            <result property="originalbillcode" column="OriginalBillCode" jdbcType="VARCHAR"/>
-            <result property="fromlocid" column="FromLocId" jdbcType="BIGINT"/>
-            <result property="fromloccode" column="FromLocCode" jdbcType="VARCHAR"/>
-            <result property="tolocid" column="ToLocId" jdbcType="BIGINT"/>
-            <result property="toloccode" column="ToLocCode" jdbcType="VARCHAR"/>
-            <result property="pickmode" column="PickMode" jdbcType="INTEGER"/>
-            <result property="inventoryitemid" column="InventoryItemId" jdbcType="BIGINT"/>
-            <result property="inventoryitemdetailid" column="InventoryItemDetailId" jdbcType="BIGINT"/>
-            <result property="planquantity" column="PlanQuantity" jdbcType="DECIMAL"/>
-            <result property="planpkgquantity" column="PlanPkgQuantity" jdbcType="DECIMAL"/>
-            <result property="movedpkgquantity" column="MovedPkgQuantity" jdbcType="DECIMAL"/>
-            <result property="packageunitid" column="PackageUnitId" jdbcType="BIGINT"/>
+            <result property="relationOrderItemId" column="RelationOrderItemId" jdbcType="BIGINT"/>
+            <result property="taskNo" column="TaskNo" jdbcType="VARCHAR"/>
+            <result property="palletCode" column="PalletCode" jdbcType="VARCHAR"/>
+            <result property="materialId" column="MaterialId" jdbcType="BIGINT"/>
+            <result property="materialPropertyId" column="MaterialPropertyId" jdbcType="BIGINT"/>
+            <result property="workOrderId" column="WorkOrderId" jdbcType="BIGINT"/>
+            <result property="XStatus" column="XStatus" jdbcType="INTEGER"/>
+            <result property="originalBillCode" column="OriginalBillCode" jdbcType="VARCHAR"/>
+            <result property="fromLocId" column="FromLocId" jdbcType="BIGINT"/>
+            <result property="fromLocCode" column="FromLocCode" jdbcType="VARCHAR"/>
+            <result property="toLocId" column="ToLocId" jdbcType="BIGINT"/>
+            <result property="toLocCode" column="ToLocCode" jdbcType="VARCHAR"/>
+            <result property="pickMode" column="PickMode" jdbcType="INTEGER"/>
+            <result property="inventoryItemId" column="InventoryItemId" jdbcType="BIGINT"/>
+            <result property="inventoryItemDetailId" column="InventoryItemDetailId" jdbcType="BIGINT"/>
+            <result property="planQuantity" column="PlanQuantity" jdbcType="DECIMAL"/>
+            <result property="planPkgQuantity" column="PlanPkgQuantity" jdbcType="DECIMAL"/>
+            <result property="movedPkgQuantity" column="MovedPkgQuantity" jdbcType="DECIMAL"/>
+            <result property="packageUnitId" column="PackageUnitId" jdbcType="BIGINT"/>
             <result property="proirity" column="Proirity" jdbcType="INTEGER"/>
-            <result property="creatorid" column="CreatorId" jdbcType="OTHER"/>
-            <result property="creatorname" column="CreatorName" jdbcType="VARCHAR"/>
-            <result property="lastmodifierid" column="LastModifierId" jdbcType="OTHER"/>
-            <result property="lastmodifiername" column="LastModifierName" jdbcType="VARCHAR"/>
-            <result property="creationtime" column="CreationTime" jdbcType="BIGINT"/>
-            <result property="lastmodificationtime" column="LastModificationTime" jdbcType="BIGINT"/>
-            <result property="currentloccode" column="CurrentLocCode" jdbcType="VARCHAR"/>
+            <result property="creatorId" column="CreatorId" jdbcType="OTHER"/>
+            <result property="creatorName" column="CreatorName" jdbcType="VARCHAR"/>
+            <result property="lastModifierId" column="LastModifierId" jdbcType="OTHER"/>
+            <result property="lastModifierName" column="LastModifierName" jdbcType="VARCHAR"/>
+            <result property="creationTime" column="CreationTime" jdbcType="BIGINT"/>
+            <result property="lastModificationTime" column="LastModificationTime" jdbcType="BIGINT"/>
+            <result property="currentLocCode" column="CurrentLocCode" jdbcType="VARCHAR"/>
             <result property="description" column="Description" jdbcType="VARCHAR"/>
-            <result property="fromlanwayno" column="FromLanwayNo" jdbcType="VARCHAR"/>
+            <result property="fromLanwayNo" column="FromLanwayNo" jdbcType="VARCHAR"/>
             <result property="height" column="Height" jdbcType="DECIMAL"/>
             <result property="length" column="Length" jdbcType="DECIMAL"/>
-            <result property="pallettype" column="PalletType" jdbcType="VARCHAR"/>
-            <result property="shipbatchno" column="ShipBatchNo" jdbcType="VARCHAR"/>
+            <result property="palletType" column="PalletType" jdbcType="VARCHAR"/>
+            <result property="shipBatchNo" column="ShipBatchNo" jdbcType="VARCHAR"/>
             <result property="showlnfor" column="Showlnfor" jdbcType="VARCHAR"/>
-            <result property="toavailableloccodes" column="ToAvailableLocCodes" jdbcType="VARCHAR"/>
-            <result property="tolanwayno" column="ToLanwayNo" jdbcType="VARCHAR"/>
-            <result property="torealloccode" column="ToRealLocCode" jdbcType="VARCHAR"/>
+            <result property="toAvailableLocCodes" column="ToAvailableLocCodes" jdbcType="VARCHAR"/>
+            <result property="toLanwayNo" column="ToLanwayNo" jdbcType="VARCHAR"/>
+            <result property="toRealLocCode" column="ToRealLocCode" jdbcType="VARCHAR"/>
             <result property="weight" column="Weight" jdbcType="DECIMAL"/>
             <result property="width" column="Width" jdbcType="DECIMAL"/>
-            <result property="fromcolumn" column="FromColumn" jdbcType="INTEGER"/>
-            <result property="fromdepth" column="FromDepth" jdbcType="INTEGER"/>
-            <result property="fromlevel" column="FromLevel" jdbcType="INTEGER"/>
-            <result property="fromrack" column="FromRack" jdbcType="INTEGER"/>
-            <result property="tocolumn" column="ToColumn" jdbcType="INTEGER"/>
-            <result property="todepth" column="ToDepth" jdbcType="INTEGER"/>
-            <result property="tolevel" column="ToLevel" jdbcType="INTEGER"/>
-            <result property="torack" column="ToRack" jdbcType="INTEGER"/>
-            <result property="tasktype" column="TaskType" jdbcType="INTEGER"/>
-            <result property="taskdirection" column="TaskDirection" jdbcType="INTEGER"/>
-            <result property="requestno" column="RequestNo" jdbcType="OTHER"/>
-            <result property="originalbilltypename" column="OriginalBillTypeName" jdbcType="VARCHAR"/>
-            <result property="todock" column="ToDock" jdbcType="VARCHAR"/>
-            <result property="relationorderitemcode" column="RelationOrderItemCode" jdbcType="VARCHAR"/>
-            <result property="taskgroup" column="TaskGroup" jdbcType="INTEGER"/>
-            <result property="towarehouseid" column="ToWarehouseId" jdbcType="BIGINT"/>
+            <result property="fromColumn" column="FromColumn" jdbcType="INTEGER"/>
+            <result property="fromDepth" column="FromDepth" jdbcType="INTEGER"/>
+            <result property="fromLevel" column="FromLevel" jdbcType="INTEGER"/>
+            <result property="fromRack" column="FromRack" jdbcType="INTEGER"/>
+            <result property="toColumn" column="ToColumn" jdbcType="INTEGER"/>
+            <result property="toDepth" column="ToDepth" jdbcType="INTEGER"/>
+            <result property="toLevel" column="ToLevel" jdbcType="INTEGER"/>
+            <result property="toRack" column="ToRack" jdbcType="INTEGER"/>
+            <result property="taskType" column="TaskType" jdbcType="INTEGER"/>
+            <result property="taskDirection" column="TaskDirection" jdbcType="INTEGER"/>
+            <result property="requestNo" column="RequestNo" jdbcType="OTHER"/>
+            <result property="originalBillTypeName" column="OriginalBillTypeName" jdbcType="VARCHAR"/>
+            <result property="toDock" column="ToDock" jdbcType="VARCHAR"/>
+            <result property="relationOrderItemCode" column="RelationOrderItemCode" jdbcType="VARCHAR"/>
+            <result property="taskGroup" column="TaskGroup" jdbcType="INTEGER"/>
+            <result property="toWarehouseId" column="ToWarehouseId" jdbcType="BIGINT"/>
             <result property="carton" column="Carton" jdbcType="VARCHAR"/>
-            <result property="serialno" column="SerialNo" jdbcType="VARCHAR"/>
-            <result property="movetargetmaintaskno" column="MoveTargetMainTaskNo" jdbcType="VARCHAR"/>
+            <result property="serialNo" column="SerialNo" jdbcType="VARCHAR"/>
+            <result property="moveTargetMainTaskNo" column="MoveTargetMainTaskNo" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">

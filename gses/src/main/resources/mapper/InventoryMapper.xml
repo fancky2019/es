@@ -7,16 +7,16 @@
     <resultMap id="BaseResultMap" type="gs.com.gses.model.entity.Inventory">
             <id property="id" column="Id" jdbcType="BIGINT"/>
             <result property="whid" column="Whid" jdbcType="BIGINT"/>
-            <result property="locationid" column="LocationId" jdbcType="BIGINT"/>
+            <result property="locationId" column="LocationId" jdbcType="BIGINT"/>
             <result property="pallet" column="Pallet" jdbcType="VARCHAR"/>
-            <result property="allocatedsmallunitquantity" column="AllocatedSmallUnitQuantity" jdbcType="DECIMAL"/>
-            <result property="allocatedpackagequantity" column="AllocatedPackageQuantity" jdbcType="DECIMAL"/>
-            <result property="qcstatus" column="QCStatus" jdbcType="INTEGER"/>
-            <result property="xstatus" column="XStatus" jdbcType="INTEGER"/>
-            <result property="islocked" column="IsLocked" jdbcType="BIT"/>
-            <result property="issealed" column="IsSealed" jdbcType="BIT"/>
-            <result property="isscattered" column="IsScattered" jdbcType="BIT"/>
-            <result property="isexpired" column="IsExpired" jdbcType="BIT"/>
+            <result property="allocatedSmallUnitQuantity" column="AllocatedSmallUnitQuantity" jdbcType="DECIMAL"/>
+            <result property="allocatedPackageQuantity" column="AllocatedPackageQuantity" jdbcType="DECIMAL"/>
+            <result property="QCStatus" column="QCStatus" jdbcType="INTEGER"/>
+            <result property="XStatus" column="XStatus" jdbcType="INTEGER"/>
+            <result property="isLocked" column="IsLocked" jdbcType="BIT"/>
+            <result property="isSealed" column="IsSealed" jdbcType="BIT"/>
+            <result property="isScattered" column="IsScattered" jdbcType="BIT"/>
+            <result property="isExpired" column="IsExpired" jdbcType="BIT"/>
             <result property="comments" column="Comments" jdbcType="VARCHAR"/>
             <result property="weight" column="Weight" jdbcType="DECIMAL"/>
             <result property="length" column="Length" jdbcType="DECIMAL"/>
@@ -27,20 +27,20 @@
             <result property="str3" column="Str3" jdbcType="VARCHAR"/>
             <result property="str4" column="Str4" jdbcType="VARCHAR"/>
             <result property="str5" column="Str5" jdbcType="VARCHAR"/>
-            <result property="creatorid" column="CreatorId" jdbcType="OTHER"/>
-            <result property="creatorname" column="CreatorName" jdbcType="VARCHAR"/>
-            <result property="lastmodifierid" column="LastModifierId" jdbcType="OTHER"/>
-            <result property="lastmodifiername" column="LastModifierName" jdbcType="VARCHAR"/>
-            <result property="creationtime" column="CreationTime" jdbcType="BIGINT"/>
-            <result property="lastmodificationtime" column="LastModificationTime" jdbcType="BIGINT"/>
-            <result property="packagequantity" column="PackageQuantity" jdbcType="DECIMAL"/>
-            <result property="smallunitquantity" column="SmallUnitQuantity" jdbcType="DECIMAL"/>
-            <result property="levelcount" column="LevelCount" jdbcType="INTEGER"/>
-            <result property="conveyorcode" column="ConveyorCode" jdbcType="VARCHAR"/>
-            <result property="applyorordercode" column="ApplyOrOrderCode" jdbcType="VARCHAR"/>
-            <result property="orginagvid" column="OrginAGVID" jdbcType="INTEGER"/>
-            <result property="orginlocationcode" column="OrginLocationCode" jdbcType="VARCHAR"/>
-            <result property="pallettype" column="PalletType" jdbcType="VARCHAR"/>
+            <result property="creatorId" column="CreatorId" jdbcType="OTHER"/>
+            <result property="creatorName" column="CreatorName" jdbcType="VARCHAR"/>
+            <result property="lastModifierId" column="LastModifierId" jdbcType="OTHER"/>
+            <result property="lastModifierName" column="LastModifierName" jdbcType="VARCHAR"/>
+            <result property="creationTime" column="CreationTime" jdbcType="BIGINT"/>
+            <result property="lastModificationTime" column="LastModificationTime" jdbcType="BIGINT"/>
+            <result property="packageQuantity" column="PackageQuantity" jdbcType="DECIMAL"/>
+            <result property="smallUnitQuantity" column="SmallUnitQuantity" jdbcType="DECIMAL"/>
+            <result property="levelCount" column="LevelCount" jdbcType="INTEGER"/>
+            <result property="conveyorCode" column="ConveyorCode" jdbcType="VARCHAR"/>
+            <result property="applyOrOrderCode" column="ApplyOrOrderCode" jdbcType="VARCHAR"/>
+            <result property="orginAGVID" column="OrginAGVID" jdbcType="INTEGER"/>
+            <result property="orginLocationCode" column="OrginLocationCode" jdbcType="VARCHAR"/>
+            <result property="palletType" column="PalletType" jdbcType="VARCHAR"/>
             <result property="volume" column="Volume" jdbcType="VARCHAR"/>
     </resultMap>
 

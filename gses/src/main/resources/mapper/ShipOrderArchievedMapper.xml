@@ -6,24 +6,24 @@
 
     <resultMap id="BaseResultMap" type="gs.com.gses.model.entity.ShipOrderArchieved">
             <id property="id" column="Id" jdbcType="BIGINT"/>
-            <result property="creatorid" column="CreatorId" jdbcType="OTHER"/>
-            <result property="creatorname" column="CreatorName" jdbcType="VARCHAR"/>
-            <result property="lastmodifierid" column="LastModifierId" jdbcType="OTHER"/>
-            <result property="lastmodifiername" column="LastModifierName" jdbcType="VARCHAR"/>
-            <result property="creationtime" column="CreationTime" jdbcType="BIGINT"/>
-            <result property="lastmodificationtime" column="LastModificationTime" jdbcType="BIGINT"/>
+            <result property="creatorId" column="CreatorId" jdbcType="OTHER"/>
+            <result property="creatorName" column="CreatorName" jdbcType="VARCHAR"/>
+            <result property="lastModifierId" column="LastModifierId" jdbcType="OTHER"/>
+            <result property="lastModifierName" column="LastModifierName" jdbcType="VARCHAR"/>
+            <result property="creationTime" column="CreationTime" jdbcType="BIGINT"/>
+            <result property="lastModificationTime" column="LastModificationTime" jdbcType="BIGINT"/>
             <result property="whid" column="Whid" jdbcType="BIGINT"/>
-            <result property="xcode" column="XCode" jdbcType="VARCHAR"/>
-            <result property="tolocid" column="ToLocId" jdbcType="BIGINT"/>
-            <result property="toloccode" column="ToLocCode" jdbcType="VARCHAR"/>
+            <result property="XCode" column="XCode" jdbcType="VARCHAR"/>
+            <result property="toLocId" column="ToLocId" jdbcType="BIGINT"/>
+            <result property="toLocCode" column="ToLocCode" jdbcType="VARCHAR"/>
             <result property="destination" column="Destination" jdbcType="VARCHAR"/>
-            <result property="applyshipordercode" column="ApplyShipOrderCode" jdbcType="VARCHAR"/>
-            <result property="xstatus" column="XStatus" jdbcType="INTEGER"/>
-            <result property="organiztionid" column="OrganiztionId" jdbcType="BIGINT"/>
-            <result property="billtypeid" column="BillTypeId" jdbcType="BIGINT"/>
-            <result property="expectedpkgquantity" column="ExpectedPkgQuantity" jdbcType="DECIMAL"/>
-            <result property="alloactedpkgquantity" column="AlloactedPkgQuantity" jdbcType="DECIMAL"/>
-            <result property="pickedpkgquantity" column="PickedPkgQuantity" jdbcType="DECIMAL"/>
+            <result property="applyShipOrderCode" column="ApplyShipOrderCode" jdbcType="VARCHAR"/>
+            <result property="XStatus" column="XStatus" jdbcType="INTEGER"/>
+            <result property="organiztionId" column="OrganiztionId" jdbcType="BIGINT"/>
+            <result property="billTypeId" column="BillTypeId" jdbcType="BIGINT"/>
+            <result property="expectedPkgQuantity" column="ExpectedPkgQuantity" jdbcType="DECIMAL"/>
+            <result property="alloactedPkgQuantity" column="AlloactedPkgQuantity" jdbcType="DECIMAL"/>
+            <result property="pickedPkgQuantity" column="PickedPkgQuantity" jdbcType="DECIMAL"/>
             <result property="comments" column="Comments" jdbcType="VARCHAR"/>
             <result property="str1" column="Str1" jdbcType="VARCHAR"/>
             <result property="str2" column="Str2" jdbcType="VARCHAR"/>
@@ -46,14 +46,14 @@
             <result property="str19" column="Str19" jdbcType="VARCHAR"/>
             <result property="str20" column="Str20" jdbcType="VARCHAR"/>
             <result property="proirity" column="Proirity" jdbcType="INTEGER"/>
-            <result property="oneclicktime" column="OneClickTime" jdbcType="BIGINT"/>
-            <result property="organiztioncustomid" column="OrganiztionCustomId" jdbcType="BIGINT"/>
-            <result property="organiztiondepartmentid" column="OrganiztionDepartmentId" jdbcType="BIGINT"/>
-            <result property="organiztionsupplierid" column="OrganiztionSupplierId" jdbcType="BIGINT"/>
-            <result property="destinationdock" column="DestinationDock" jdbcType="VARCHAR"/>
-            <result property="zonecode" column="ZoneCode" jdbcType="VARCHAR"/>
-            <result property="zoneid" column="ZoneID" jdbcType="BIGINT"/>
-            <result property="groupflag" column="GroupFlag" jdbcType="VARCHAR"/>
+            <result property="oneClickTime" column="OneClickTime" jdbcType="BIGINT"/>
+            <result property="organiztionCustomId" column="OrganiztionCustomId" jdbcType="BIGINT"/>
+            <result property="organiztionDepartmentId" column="OrganiztionDepartmentId" jdbcType="BIGINT"/>
+            <result property="organiztionSupplierId" column="OrganiztionSupplierId" jdbcType="BIGINT"/>
+            <result property="destinationDock" column="DestinationDock" jdbcType="VARCHAR"/>
+            <result property="zoneCode" column="ZoneCode" jdbcType="VARCHAR"/>
+            <result property="zoneID" column="ZoneID" jdbcType="BIGINT"/>
+            <result property="groupFlag" column="GroupFlag" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">

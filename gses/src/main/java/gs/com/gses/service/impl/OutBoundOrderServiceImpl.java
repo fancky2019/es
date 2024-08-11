@@ -1,6 +1,8 @@
 package gs.com.gses.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import gs.com.gses.elasticsearch.ShipOrderInfoRepository;
 import gs.com.gses.model.elasticsearch.DemoProduct;
 import gs.com.gses.model.elasticsearch.ShipOrderInfo;
@@ -83,6 +85,15 @@ public class OutBoundOrderServiceImpl implements OutBoundOrderService {
     @Autowired
     private MaterialService materialService;
 
+    @Autowired
+    private LocationService locationService;
+
+    @Autowired
+    private LanewayService lanewayService;
+
+    @Autowired
+    private ZoneService zoneService;
+
 
     @Override
     public void taskComplete(long wmsTaskId) throws Exception {
@@ -95,46 +106,46 @@ public class OutBoundOrderServiceImpl implements OutBoundOrderService {
         Long inventoryItemId = 0L;
         Long materialId = 0L;
         if (wmsTask != null) {
-            shipPickOrderItemId = wmsTask.getRelationorderitemid();
-            inventoryItemId = wmsTask.getInventoryitemid();
-            materialId = wmsTask.getMaterialid();
+            shipPickOrderItemId = wmsTask.getRelationOrderItemId();
+            inventoryItemId = wmsTask.getInventoryItemId();
+            materialId = wmsTask.getMaterialId();
         } else {
-            shipPickOrderItemId = wmsTaskArchived.getRelationorderitemid();
-            inventoryItemId = wmsTaskArchived.getInventoryitemid();
-            materialId = wmsTaskArchived.getMaterialid();
+            shipPickOrderItemId = wmsTaskArchived.getRelationOrderItemId();
+            inventoryItemId = wmsTaskArchived.getInventoryItemId();
+            materialId = wmsTaskArchived.getMaterialId();
         }
 
         ShipPickOrderItem shipPickOrderItem = shipPickOrderItemService.getById(shipPickOrderItemId);
-        ShipPickOrder shipPickOrder = shipPickOrderService.getById(shipPickOrderItem.getShippickorderid());
-        ShipOrderItem shipOrderItem = shipOrderItemService.getById(shipPickOrderItem.getShiporderitemid());
-        ShipOrder shipOrder = shipOrderService.getById(shipOrderItem.getShiporderid());
+        ShipPickOrder shipPickOrder = shipPickOrderService.getById(shipPickOrderItem.getShipPickOrderId());
+        ShipOrderItem shipOrderItem = shipOrderItemService.getById(shipPickOrderItem.getShipOrderItemId());
+        ShipOrder shipOrder = shipOrderService.getById(shipOrderItem.getShipOrderId());
         LambdaQueryWrapper<WaveShipOrderItemRelation> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(WaveShipOrderItemRelation::getShiporderitemid, shipOrderItem.getId());
+        lambdaQueryWrapper.eq(WaveShipOrderItemRelation::getShipOrderItemId, shipOrderItem.getId());
         List<WaveShipOrderItemRelation> shipOrderItemRelations = waveShipOrderItemRelationService.list(lambdaQueryWrapper);
         InventoryItem inventoryItem = inventoryItemService.getById(inventoryItemId);
-        Inventory inventory = inventoryService.getById(inventoryItem.getInventoryid());
+        Inventory inventory = inventoryService.getById(inventoryItem.getInventoryId());
         Material material = materialService.getById(materialId);
 
         ShipOrderInfo shipOrderInfo = null;
         List<ShipOrderInfo> shipOrderInfoList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(shipOrderItemRelations)) {
-            List<Long> applyshiporderitemids = shipOrderItemRelations.stream().map(p -> p.getApplyshiporderitemid()).collect(Collectors.toList());
+            List<Long> applyshiporderitemids = shipOrderItemRelations.stream().map(p -> p.getApplyShipOrderItemId()).collect(Collectors.toList());
             List<ApplyShipOrderItem> applyShipOrderItems = applyShipOrderItemService.listByIds(applyshiporderitemids);
-            List<Long> applyShipOrderIds = applyShipOrderItems.stream().map(p -> p.getApplyshiporderid()).collect(Collectors.toList());
+            List<Long> applyShipOrderIds = applyShipOrderItems.stream().map(p -> p.getApplyShipOrderId()).collect(Collectors.toList());
 
             List<ApplyShipOrder> applyShipOrders = applyShipOrderService.listByIds(applyShipOrderIds);
             for (ApplyShipOrderItem applyShipOrderItem : applyShipOrderItems) {
-                List<ApplyShipOrder> cuApplyShipOrderList = applyShipOrders.stream().filter(p -> p.getId().equals(applyShipOrderItem.getApplyshiporderid())).collect(Collectors.toList());
+                List<ApplyShipOrder> cuApplyShipOrderList = applyShipOrders.stream().filter(p -> p.getId().equals(applyShipOrderItem.getApplyShipOrderId())).collect(Collectors.toList());
                 if (CollectionUtils.isEmpty(cuApplyShipOrderList)) {
                     continue;
                 }
                 ApplyShipOrder applyShipOrder = cuApplyShipOrderList.get(0);
                 shipOrderInfo = new ShipOrderInfo();
                 shipOrderInfo.setApplyShipOrderId(applyShipOrder.getId());
-                shipOrderInfo.setApplyShipOrderCode(applyShipOrder.getXcode());
+                shipOrderInfo.setApplyShipOrderCode(applyShipOrder.getXCode());
                 shipOrderInfo.setApplyShipOrderItemId(applyShipOrderItem.getId());
-                shipOrderInfo.setApplyShipOrderItemRequiredPkgQuantity(applyShipOrderItem.getRequirednumber());
-                shipOrderInfo.setApplyShipOrderItemAllocatedPkgQuantity(applyShipOrderItem.getAllocatednumber());
+                shipOrderInfo.setApplyShipOrderItemRequiredPkgQuantity(applyShipOrderItem.getRequiredNumber());
+                shipOrderInfo.setApplyShipOrderItemAllocatedPkgQuantity(applyShipOrderItem.getAllocatedNumber());
 
                 setShipOrderInfo(shipOrderInfo, material,
                         shipOrder,
@@ -170,36 +181,36 @@ public class OutBoundOrderServiceImpl implements OutBoundOrderService {
                                   InventoryItem inventoryItem,
                                   WmsTask wmsTask, WmsTaskArchived wmsTaskArchived) {
         shipOrderInfo.setId(shipOrder.getId());
-        shipOrderInfo.setShipOrderCode(shipOrder.getXcode());
-        shipOrderInfo.setShipOrderItemAllocatedPkgQuantity(shipOrderItem.getAlloactedpkgquantity());
-        shipOrderInfo.setShipOrderItemRequiredPkgQuantity(shipOrderItem.getRequiredpkgquantity());
+        shipOrderInfo.setShipOrderCode(shipOrder.getXCode());
+        shipOrderInfo.setShipOrderItemAllocatedPkgQuantity(shipOrderItem.getAlloactedPkgQuantity());
+        shipOrderInfo.setShipOrderItemRequiredPkgQuantity(shipOrderItem.getRequiredPkgQuantity());
         shipOrderInfo.setShipPickOrderId(shipPickOrder.getId());
         shipOrderInfo.setShipPickOrderItemId(shipPickOrderItem.getId());
-        shipOrderInfo.setShipPickOrderItemRequiredPkgQuantity(shipPickOrderItem.getPlanpkgquantity());
-        shipOrderInfo.setShipOrderItemAllocatedPkgQuantity(shipPickOrderItem.getAllocatedpkgquantity());
+        shipOrderInfo.setShipPickOrderItemRequiredPkgQuantity(shipPickOrderItem.getPlanPkgQuantity());
+        shipOrderInfo.setShipOrderItemAllocatedPkgQuantity(shipPickOrderItem.getAllocatedPkgQuantity());
         shipOrderInfo.setInventoryId(inventory.getId());
         shipOrderInfo.setInventoryItemId(inventoryItem.getId());
         shipOrderInfo.setMaterialId(material.getId());
-        shipOrderInfo.setMaterialName(material.getXname());
-        shipOrderInfo.setMaterialCode(material.getXcode());
+        shipOrderInfo.setMaterialName(material.getXName());
+        shipOrderInfo.setMaterialCode(material.getXCode());
         shipOrderInfo.setSerialNo("");
         shipOrderInfo.setWorkOrderId(-1L);
         shipOrderInfo.setLocationId(-1L);
         shipOrderInfo.setTaskCompletedTime(LocalDateTime.now());
         if (wmsTask != null) {
             shipOrderInfo.setWmsTaskId(wmsTask.getId());
-            shipOrderInfo.setTaskNo(wmsTask.getTaskno());
-            shipOrderInfo.setInventoryItemDetailId(wmsTask.getInventoryitemdetailid());
-            shipOrderInfo.setPallet(wmsTask.getPalletcode());
-            shipOrderInfo.setMovedPkgQuantity(wmsTask.getMovedpkgquantity());
-            shipOrderInfo.setMaterialId(wmsTask.getMaterialid());
+            shipOrderInfo.setTaskNo(wmsTask.getTaskNo());
+            shipOrderInfo.setInventoryItemDetailId(wmsTask.getInventoryItemDetailId());
+            shipOrderInfo.setPallet(wmsTask.getPalletCode());
+            shipOrderInfo.setMovedPkgQuantity(wmsTask.getMovedPkgQuantity());
+            shipOrderInfo.setMaterialId(wmsTask.getMaterialId());
         } else {
             shipOrderInfo.setWmsTaskId(wmsTaskArchived.getId());
-            shipOrderInfo.setTaskNo(wmsTaskArchived.getTaskno());
-            shipOrderInfo.setInventoryItemDetailId(wmsTaskArchived.getInventoryitemdetailid());
-            shipOrderInfo.setPallet(wmsTaskArchived.getPalletcode());
-            shipOrderInfo.setMovedPkgQuantity(wmsTaskArchived.getMovedpkgquantity());
-            shipOrderInfo.setMaterialId(wmsTaskArchived.getMaterialid());
+            shipOrderInfo.setTaskNo(wmsTaskArchived.getTaskNo());
+            shipOrderInfo.setInventoryItemDetailId(wmsTaskArchived.getInventoryItemDetailId());
+            shipOrderInfo.setPallet(wmsTaskArchived.getPalletCode());
+            shipOrderInfo.setMovedPkgQuantity(wmsTaskArchived.getMovedPkgQuantity());
+            shipOrderInfo.setMaterialId(wmsTaskArchived.getMaterialId());
         }
 
     }
@@ -324,21 +335,21 @@ public class OutBoundOrderServiceImpl implements OutBoundOrderService {
                 "小猫", "狼狗", "鸡肉", "牛肉", "金枪鱼",
         };
         int length = names.length;
-        GenericObjectPoolConfig config=new GenericObjectPoolConfig();
+        GenericObjectPoolConfig config = new GenericObjectPoolConfig();
         config.setMaxIdle(1010);
         //默认8个
         config.setMaxTotal(1050);
-        GenericObjectPool<ShipOrderInfo> objectPool = new GenericObjectPool<>(new PooledObjectFactoryImpl<>(ShipOrderInfo.class),config);
+        GenericObjectPool<ShipOrderInfo> objectPool = new GenericObjectPool<>(new PooledObjectFactoryImpl<>(ShipOrderInfo.class), config);
         ShipOrderInfo shipOrderInfo = null;
         //磁盘空间不足，只能写500W
         for (long j = 7731; j < 10000; j++) {
             List<ShipOrderInfo> shipOrderInfoList = new ArrayList<>();
             for (long m = 0; m < 1000; m++) {
-                long i = j*1000+m;
-                long id=i+1;
+                long i = j * 1000 + m;
+                long id = i + 1;
                 BigDecimal quantity = BigDecimal.valueOf(i);
 //                shipOrderInfo = objectPool.borrowObject();
-                shipOrderInfo=new ShipOrderInfo();
+                shipOrderInfo = new ShipOrderInfo();
                 shipOrderInfo.setApplyShipOrderId(id);
                 shipOrderInfo.setApplyShipOrderCode("ApplyShipOrderCode" + i);
                 shipOrderInfo.setApplyShipOrderItemId(id);
@@ -371,84 +382,84 @@ public class OutBoundOrderServiceImpl implements OutBoundOrderService {
                 shipOrderInfo.setMovedPkgQuantity(quantity);
                 shipOrderInfo.setMaterialId(id);
 
-                shipOrderInfo.setMaterialProperty1("MaterialProperty1_"+i);
-                shipOrderInfo.setMaterialProperty2("MaterialProperty2_"+i);
-                shipOrderInfo.setMaterialProperty3("MaterialProperty3_"+i);
-                shipOrderInfo.setMaterialProperty4("MaterialProperty4_"+i);
-                shipOrderInfo.setMaterialProperty5("MaterialProperty5_"+i);
-                shipOrderInfo.setMaterialProperty6("MaterialProperty6_"+i);
-                shipOrderInfo.setMaterialProperty7("MaterialProperty7_"+i);
-                shipOrderInfo.setMaterialProperty8("MaterialProperty8_"+i);
-                shipOrderInfo.setMaterialProperty9("MaterialProperty9_"+i);
-                shipOrderInfo.setMaterialProperty10("MaterialProperty10_"+i);
-                shipOrderInfo.setMaterialProperty11("MaterialProperty11_"+i);
-                shipOrderInfo.setMaterialProperty12("MaterialProperty12_"+i);
-                shipOrderInfo.setMaterialProperty13("MaterialProperty13_"+i);
-                shipOrderInfo.setMaterialProperty14("MaterialProperty14_"+i);
-                shipOrderInfo.setMaterialProperty15("MaterialProperty15_"+i);
-                shipOrderInfo.setMaterialProperty16("MaterialProperty16_"+i);
-                shipOrderInfo.setMaterialProperty17("MaterialProperty17_"+i);
-                shipOrderInfo.setMaterialProperty18("MaterialProperty18_"+i);
-                shipOrderInfo.setMaterialProperty19("MaterialProperty19_"+i);
-                shipOrderInfo.setMaterialProperty20("MaterialProperty20_"+i);
-                shipOrderInfo.setMaterialProperty21("MaterialProperty21_"+i);
-                shipOrderInfo.setMaterialProperty22("MaterialProperty22_"+i);
-                shipOrderInfo.setMaterialProperty23("MaterialProperty23_"+i);
-                shipOrderInfo.setMaterialProperty24("MaterialProperty24_"+i);
-                shipOrderInfo.setMaterialProperty25("MaterialProperty25_"+i);
-                shipOrderInfo.setMaterialProperty26("MaterialProperty26_"+i);
-                shipOrderInfo.setMaterialProperty27("MaterialProperty27_"+i);
-                shipOrderInfo.setMaterialProperty28("MaterialProperty28_"+i);
-                shipOrderInfo.setMaterialProperty29("MaterialProperty29_"+i);
-                shipOrderInfo.setMaterialProperty30("MaterialProperty30_"+i);
-                shipOrderInfo.setMaterialProperty31("MaterialProperty31_"+i);
-                shipOrderInfo.setMaterialProperty32("MaterialProperty32_"+i);
-                shipOrderInfo.setMaterialProperty33("MaterialProperty33_"+i);
-                shipOrderInfo.setMaterialProperty34("MaterialProperty34_"+i);
-                shipOrderInfo.setMaterialProperty35("MaterialProperty35_"+i);
-                shipOrderInfo.setMaterialProperty36("MaterialProperty36_"+i);
-                shipOrderInfo.setMaterialProperty37("MaterialProperty37_"+i);
-                shipOrderInfo.setMaterialProperty38("MaterialProperty38_"+i);
-                shipOrderInfo.setMaterialProperty39("MaterialProperty39_"+i);
-                shipOrderInfo.setMaterialProperty40("MaterialProperty40_"+i);
-                shipOrderInfo.setMaterialProperty41("MaterialProperty41_"+i);
-                shipOrderInfo.setMaterialProperty42("MaterialProperty42_"+i);
-                shipOrderInfo.setMaterialProperty43("MaterialProperty43_"+i);
-                shipOrderInfo.setMaterialProperty44("MaterialProperty44_"+i);
-                shipOrderInfo.setMaterialProperty45("MaterialProperty45_"+i);
-                shipOrderInfo.setMaterialProperty46("MaterialProperty46_"+i);
-                shipOrderInfo.setMaterialProperty47("MaterialProperty47_"+i);
-                shipOrderInfo.setMaterialProperty48("MaterialProperty48_"+i);
-                shipOrderInfo.setMaterialProperty49("MaterialProperty49_"+i);
-                shipOrderInfo.setMaterialProperty50("MaterialProperty50_"+i);
+                shipOrderInfo.setMaterialProperty1("MaterialProperty1_" + i);
+                shipOrderInfo.setMaterialProperty2("MaterialProperty2_" + i);
+                shipOrderInfo.setMaterialProperty3("MaterialProperty3_" + i);
+                shipOrderInfo.setMaterialProperty4("MaterialProperty4_" + i);
+                shipOrderInfo.setMaterialProperty5("MaterialProperty5_" + i);
+                shipOrderInfo.setMaterialProperty6("MaterialProperty6_" + i);
+                shipOrderInfo.setMaterialProperty7("MaterialProperty7_" + i);
+                shipOrderInfo.setMaterialProperty8("MaterialProperty8_" + i);
+                shipOrderInfo.setMaterialProperty9("MaterialProperty9_" + i);
+                shipOrderInfo.setMaterialProperty10("MaterialProperty10_" + i);
+                shipOrderInfo.setMaterialProperty11("MaterialProperty11_" + i);
+                shipOrderInfo.setMaterialProperty12("MaterialProperty12_" + i);
+                shipOrderInfo.setMaterialProperty13("MaterialProperty13_" + i);
+                shipOrderInfo.setMaterialProperty14("MaterialProperty14_" + i);
+                shipOrderInfo.setMaterialProperty15("MaterialProperty15_" + i);
+                shipOrderInfo.setMaterialProperty16("MaterialProperty16_" + i);
+                shipOrderInfo.setMaterialProperty17("MaterialProperty17_" + i);
+                shipOrderInfo.setMaterialProperty18("MaterialProperty18_" + i);
+                shipOrderInfo.setMaterialProperty19("MaterialProperty19_" + i);
+                shipOrderInfo.setMaterialProperty20("MaterialProperty20_" + i);
+                shipOrderInfo.setMaterialProperty21("MaterialProperty21_" + i);
+                shipOrderInfo.setMaterialProperty22("MaterialProperty22_" + i);
+                shipOrderInfo.setMaterialProperty23("MaterialProperty23_" + i);
+                shipOrderInfo.setMaterialProperty24("MaterialProperty24_" + i);
+                shipOrderInfo.setMaterialProperty25("MaterialProperty25_" + i);
+                shipOrderInfo.setMaterialProperty26("MaterialProperty26_" + i);
+                shipOrderInfo.setMaterialProperty27("MaterialProperty27_" + i);
+                shipOrderInfo.setMaterialProperty28("MaterialProperty28_" + i);
+                shipOrderInfo.setMaterialProperty29("MaterialProperty29_" + i);
+                shipOrderInfo.setMaterialProperty30("MaterialProperty30_" + i);
+                shipOrderInfo.setMaterialProperty31("MaterialProperty31_" + i);
+                shipOrderInfo.setMaterialProperty32("MaterialProperty32_" + i);
+                shipOrderInfo.setMaterialProperty33("MaterialProperty33_" + i);
+                shipOrderInfo.setMaterialProperty34("MaterialProperty34_" + i);
+                shipOrderInfo.setMaterialProperty35("MaterialProperty35_" + i);
+                shipOrderInfo.setMaterialProperty36("MaterialProperty36_" + i);
+                shipOrderInfo.setMaterialProperty37("MaterialProperty37_" + i);
+                shipOrderInfo.setMaterialProperty38("MaterialProperty38_" + i);
+                shipOrderInfo.setMaterialProperty39("MaterialProperty39_" + i);
+                shipOrderInfo.setMaterialProperty40("MaterialProperty40_" + i);
+                shipOrderInfo.setMaterialProperty41("MaterialProperty41_" + i);
+                shipOrderInfo.setMaterialProperty42("MaterialProperty42_" + i);
+                shipOrderInfo.setMaterialProperty43("MaterialProperty43_" + i);
+                shipOrderInfo.setMaterialProperty44("MaterialProperty44_" + i);
+                shipOrderInfo.setMaterialProperty45("MaterialProperty45_" + i);
+                shipOrderInfo.setMaterialProperty46("MaterialProperty46_" + i);
+                shipOrderInfo.setMaterialProperty47("MaterialProperty47_" + i);
+                shipOrderInfo.setMaterialProperty48("MaterialProperty48_" + i);
+                shipOrderInfo.setMaterialProperty49("MaterialProperty49_" + i);
+                shipOrderInfo.setMaterialProperty50("MaterialProperty50_" + i);
 
-                shipOrderInfo.setShipOrderItemProperty1("ShipOrderItemProperty1_"+i);
-                shipOrderInfo.setShipOrderItemProperty2("ShipOrderItemProperty2_"+i);
-                shipOrderInfo.setShipOrderItemProperty3("ShipOrderItemProperty3_"+i);
-                shipOrderInfo.setShipOrderItemProperty4("ShipOrderItemProperty4_"+i);
-                shipOrderInfo.setShipOrderItemProperty5("ShipOrderItemProperty5_"+i);
-                shipOrderInfo.setShipOrderItemProperty6("ShipOrderItemProperty6_"+i);
-                shipOrderInfo.setShipOrderItemProperty7("ShipOrderItemProperty7_"+i);
-                shipOrderInfo.setShipOrderItemProperty8("ShipOrderItemProperty8_"+i);
-                shipOrderInfo.setShipOrderItemProperty9("ShipOrderItemProperty9_"+i);
-                shipOrderInfo.setShipOrderItemProperty10("ShipOrderItemProperty10_"+i);
-                shipOrderInfo.setShipOrderItemProperty11("ShipOrderItemProperty11_"+i);
-                shipOrderInfo.setShipOrderItemProperty12("ShipOrderItemProperty12_"+i);
-                shipOrderInfo.setShipOrderItemProperty13("ShipOrderItemProperty13_"+i);
-                shipOrderInfo.setShipOrderItemProperty14("ShipOrderItemProperty14_"+i);
-                shipOrderInfo.setShipOrderItemProperty15("ShipOrderItemProperty15_"+i);
-                shipOrderInfo.setShipOrderItemProperty16("ShipOrderItemProperty16_"+i);
-                shipOrderInfo.setShipOrderItemProperty17("ShipOrderItemProperty17_"+i);
-                shipOrderInfo.setShipOrderItemProperty18("ShipOrderItemProperty18_"+i);
-                shipOrderInfo.setShipOrderItemProperty19("ShipOrderItemProperty19_"+i);
-                shipOrderInfo.setShipOrderItemProperty20("ShipOrderItemProperty20_"+i);
+                shipOrderInfo.setShipOrderItemProperty1("ShipOrderItemProperty1_" + i);
+                shipOrderInfo.setShipOrderItemProperty2("ShipOrderItemProperty2_" + i);
+                shipOrderInfo.setShipOrderItemProperty3("ShipOrderItemProperty3_" + i);
+                shipOrderInfo.setShipOrderItemProperty4("ShipOrderItemProperty4_" + i);
+                shipOrderInfo.setShipOrderItemProperty5("ShipOrderItemProperty5_" + i);
+                shipOrderInfo.setShipOrderItemProperty6("ShipOrderItemProperty6_" + i);
+                shipOrderInfo.setShipOrderItemProperty7("ShipOrderItemProperty7_" + i);
+                shipOrderInfo.setShipOrderItemProperty8("ShipOrderItemProperty8_" + i);
+                shipOrderInfo.setShipOrderItemProperty9("ShipOrderItemProperty9_" + i);
+                shipOrderInfo.setShipOrderItemProperty10("ShipOrderItemProperty10_" + i);
+                shipOrderInfo.setShipOrderItemProperty11("ShipOrderItemProperty11_" + i);
+                shipOrderInfo.setShipOrderItemProperty12("ShipOrderItemProperty12_" + i);
+                shipOrderInfo.setShipOrderItemProperty13("ShipOrderItemProperty13_" + i);
+                shipOrderInfo.setShipOrderItemProperty14("ShipOrderItemProperty14_" + i);
+                shipOrderInfo.setShipOrderItemProperty15("ShipOrderItemProperty15_" + i);
+                shipOrderInfo.setShipOrderItemProperty16("ShipOrderItemProperty16_" + i);
+                shipOrderInfo.setShipOrderItemProperty17("ShipOrderItemProperty17_" + i);
+                shipOrderInfo.setShipOrderItemProperty18("ShipOrderItemProperty18_" + i);
+                shipOrderInfo.setShipOrderItemProperty19("ShipOrderItemProperty19_" + i);
+                shipOrderInfo.setShipOrderItemProperty20("ShipOrderItemProperty20_" + i);
 
                 shipOrderInfoList.add(shipOrderInfo);
             }
 
             //仓储慢,几乎比模板慢了一半
 //            shipOrderInfoRepository.saveAll(shipOrderInfoList);
-              elasticsearchRestTemplate.save(shipOrderInfoList);
+            elasticsearchRestTemplate.save(shipOrderInfoList);
 //            for (ShipOrderInfo obj : shipOrderInfoList) {
 //                objectPool.returnObject(obj);
 //            }
@@ -464,7 +475,40 @@ public class OutBoundOrderServiceImpl implements OutBoundOrderService {
 
     @Override
     public void initFromDb() {
+        long count = this.inventoryItemDetailService.count();
+        int step = 1000;
+        long times = count / step;
+        long left = count / step;
+        if (left > 0) {
+            times++;
+        }
+        //current :pageIndex  ,size:pageSize
+        Page<InventoryItemDetail> page = new Page<>(1, step);
+        long pageIndex = 0L;
+        while (times > 0) {
+            times--;
+            page.setCurrent(++pageIndex);
+            IPage<InventoryItemDetail> inventoryItemDetailPage = this.inventoryItemDetailService.page(page);
+            List<InventoryItemDetail> inventoryItemDetailList = inventoryItemDetailPage.getRecords();
+            List<Long> inventoryItemIdList = inventoryItemDetailList.stream().map(p -> p.getInventoryItemId()).distinct().collect(Collectors.toList());
+            List<InventoryItem> inventoryItemList =  this.inventoryItemService.listByIds(inventoryItemIdList);
+            List<Long> inventoryIdList = inventoryItemList.stream().map(p -> p.getInventoryId()).distinct().collect(Collectors.toList());
+            List<Inventory> inventorylList =  this.inventoryService.listByIds(inventoryIdList);
+            //material
+            List<Long>  materialIdList= inventoryItemDetailList.stream().map(p -> p.getMaterialId()).distinct().collect(Collectors.toList());
+            List<Material> materialList =     this.materialService.listByIds(materialIdList);
 
+            List<Long>  locationIdList= inventorylList.stream().map(p -> p.getLocationId()).distinct().collect(Collectors.toList());
+            List<Location> locationList =     this.locationService.listByIds(locationIdList);
+
+            List<Long>  lanewayIdList= locationList.stream().map(p -> p.getLanewayId()).distinct().collect(Collectors.toList());
+            List<Laneway> lanewayList =     this.lanewayService.listByIds(locationIdList);
+
+            List<Long>  zoneIdList= lanewayList.stream().map(p -> p.getZoneId()).distinct().collect(Collectors.toList());
+            List<Zone> zoneList =     this.zoneService.listByIds(locationIdList);
+
+
+        }
     }
 
     /**
@@ -475,12 +519,12 @@ public class OutBoundOrderServiceImpl implements OutBoundOrderService {
         IndexOperations indexOperations = elasticsearchRestTemplate.indexOps(ShipOrderInfo.class);
         //创建索引
         boolean result = indexOperations.create();
-        if (result){
+        if (result) {
             //生成映射
             Document mapping = indexOperations.createMapping();
             //推送映射
             return indexOperations.putMapping(mapping);
-        }else {
+        } else {
             return result;
         }
     }

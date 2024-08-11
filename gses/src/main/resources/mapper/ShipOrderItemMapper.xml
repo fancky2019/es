@@ -6,7 +6,7 @@
 
     <resultMap id="BaseResultMap" type="gs.com.gses.model.entity.ShipOrderItem">
             <id property="id" column="Id" jdbcType="BIGINT"/>
-            <result property="shiporderId" column="ShipOrderId" jdbcType="BIGINT"/>
+            <result property="shipOrderId" column="ShipOrderId" jdbcType="BIGINT"/>
             <result property="rowNo" column="RowNo" jdbcType="INTEGER"/>
             <result property="erpCode" column="ErpCode" jdbcType="VARCHAR"/>
             <result property="thirdPartyRowNo" column="ThirdPartyRowNo" jdbcType="VARCHAR"/>

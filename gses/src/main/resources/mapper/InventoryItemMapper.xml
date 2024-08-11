@@ -6,34 +6,34 @@
 
     <resultMap id="BaseResultMap" type="gs.com.gses.model.entity.InventoryItem">
             <id property="id" column="Id" jdbcType="BIGINT"/>
-            <result property="inventoryid" column="InventoryId" jdbcType="BIGINT"/>
-            <result property="materialid" column="MaterialId" jdbcType="BIGINT"/>
-            <result property="packageunitid" column="PackageUnitId" jdbcType="BIGINT"/>
-            <result property="smallunitquantity" column="SmallUnitQuantity" jdbcType="DECIMAL"/>
-            <result property="packagequantity" column="PackageQuantity" jdbcType="DECIMAL"/>
-            <result property="allocatedsmallunitquantity" column="AllocatedSmallUnitQuantity" jdbcType="DECIMAL"/>
-            <result property="allocatedpackagequantity" column="AllocatedPackageQuantity" jdbcType="DECIMAL"/>
-            <result property="qcstatus" column="QCStatus" jdbcType="INTEGER"/>
-            <result property="xstatus" column="XStatus" jdbcType="INTEGER"/>
-            <result property="islocked" column="IsLocked" jdbcType="BIT"/>
-            <result property="issealed" column="IsSealed" jdbcType="BIT"/>
-            <result property="isscattered" column="IsScattered" jdbcType="BIT"/>
-            <result property="isexpired" column="IsExpired" jdbcType="BIT"/>
-            <result property="expiredtime" column="ExpiredTime" jdbcType="BIGINT"/>
+            <result property="inventoryId" column="InventoryId" jdbcType="BIGINT"/>
+            <result property="materialId" column="MaterialId" jdbcType="BIGINT"/>
+            <result property="packageUnitId" column="PackageUnitId" jdbcType="BIGINT"/>
+            <result property="smallUnitQuantity" column="SmallUnitQuantity" jdbcType="DECIMAL"/>
+            <result property="packageQuantity" column="PackageQuantity" jdbcType="DECIMAL"/>
+            <result property="allocatedSmallUnitQuantity" column="AllocatedSmallUnitQuantity" jdbcType="DECIMAL"/>
+            <result property="allocatedPackageQuantity" column="AllocatedPackageQuantity" jdbcType="DECIMAL"/>
+            <result property="QCStatus" column="QCStatus" jdbcType="INTEGER"/>
+            <result property="XStatus" column="XStatus" jdbcType="INTEGER"/>
+            <result property="isLocked" column="IsLocked" jdbcType="BIT"/>
+            <result property="isSealed" column="IsSealed" jdbcType="BIT"/>
+            <result property="isScattered" column="IsScattered" jdbcType="BIT"/>
+            <result property="isExpired" column="IsExpired" jdbcType="BIT"/>
+            <result property="expiredTime" column="ExpiredTime" jdbcType="BIGINT"/>
             <result property="comments" column="Comments" jdbcType="VARCHAR"/>
             <result property="str1" column="Str1" jdbcType="VARCHAR"/>
             <result property="str2" column="Str2" jdbcType="VARCHAR"/>
             <result property="str3" column="Str3" jdbcType="VARCHAR"/>
             <result property="str4" column="Str4" jdbcType="VARCHAR"/>
             <result property="str5" column="Str5" jdbcType="VARCHAR"/>
-            <result property="creatorid" column="CreatorId" jdbcType="OTHER"/>
-            <result property="creatorname" column="CreatorName" jdbcType="VARCHAR"/>
-            <result property="lastmodifierid" column="LastModifierId" jdbcType="OTHER"/>
-            <result property="lastmodifiername" column="LastModifierName" jdbcType="VARCHAR"/>
-            <result property="creationtime" column="CreationTime" jdbcType="BIGINT"/>
-            <result property="lastmodificationtime" column="LastModificationTime" jdbcType="BIGINT"/>
-            <result property="organiztionid" column="OrganiztionId" jdbcType="BIGINT"/>
-            <result property="organiztionsupplierid" column="OrganiztionSupplierId" jdbcType="BIGINT"/>
+            <result property="creatorId" column="CreatorId" jdbcType="OTHER"/>
+            <result property="creatorName" column="CreatorName" jdbcType="VARCHAR"/>
+            <result property="lastModifierId" column="LastModifierId" jdbcType="OTHER"/>
+            <result property="lastModifierName" column="LastModifierName" jdbcType="VARCHAR"/>
+            <result property="creationTime" column="CreationTime" jdbcType="BIGINT"/>
+            <result property="lastModificationTime" column="LastModificationTime" jdbcType="BIGINT"/>
+            <result property="organiztionId" column="OrganiztionId" jdbcType="BIGINT"/>
+            <result property="organiztionSupplierId" column="OrganiztionSupplierId" jdbcType="BIGINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">

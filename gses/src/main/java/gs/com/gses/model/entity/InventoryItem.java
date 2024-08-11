@@ -3,9 +3,10 @@ package gs.com.gses.model.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
-import lombok.Data;
 
 /**
  * 
@@ -17,148 +18,176 @@ public class InventoryItem implements Serializable {
     /**
      * 
      */
-    @TableId
+    @TableId(value = "Id")
     private Long id;
 
     /**
      * 库存主表id
      */
-    private Long inventoryid;
+    @TableField(value = "InventoryId")
+    private Long inventoryId;
 
     /**
      * 物料id
      */
-    private Long materialid;
+    @TableField(value = "MaterialId")
+    private Long materialId;
 
     /**
      * 包装单位id
      */
-    private Long packageunitid;
+    @TableField(value = "PackageUnitId")
+    private Long packageUnitId;
 
     /**
      * 最小单位数量
      */
-    private BigDecimal smallunitquantity;
+    @TableField(value = "SmallUnitQuantity")
+    private BigDecimal smallUnitQuantity;
 
     /**
      * 包装单位数量
      */
-    private BigDecimal packagequantity;
+    @TableField(value = "PackageQuantity")
+    private BigDecimal packageQuantity;
 
     /**
      * 已分配最小单位数量
      */
-    private BigDecimal allocatedsmallunitquantity;
+    @TableField(value = "AllocatedSmallUnitQuantity")
+    private BigDecimal allocatedSmallUnitQuantity;
 
     /**
      * 已分配包装单位数量
      */
-    private BigDecimal allocatedpackagequantity;
+    @TableField(value = "AllocatedPackageQuantity")
+    private BigDecimal allocatedPackageQuantity;
 
     /**
      * 质检状态（0待检，1已取样，2合格，-1不合格）
      */
-    private Integer qcstatus;
+    @TableField(value = "QCStatus")
+    private Integer QCStatus;
 
     /**
      * 状态 （0正常，-1禁用）
      */
-    private Integer xstatus;
+    @TableField(value = "XStatus")
+    private Integer XStatus;
 
     /**
      * 是否任务锁定
      */
-    private Boolean islocked;
+    @TableField(value = "IsLocked")
+    private Boolean isLocked;
 
     /**
      * 是否封存
      */
-    private Boolean issealed;
+    @TableField(value = "IsSealed")
+    private Boolean isSealed;
 
     /**
      * 是否零托，散货
      */
-    private Boolean isscattered;
+    @TableField(value = "IsScattered")
+    private Boolean isScattered;
 
     /**
      * 是否过期
      */
-    private Boolean isexpired;
+    @TableField(value = "IsExpired")
+    private Boolean isExpired;
 
     /**
      * 过期时间时间戳
      */
-    private Long expiredtime;
+    @TableField(value = "ExpiredTime")
+    private Long expiredTime;
 
     /**
      * 备注
      */
+    @TableField(value = "Comments")
     private String comments;
 
     /**
      * 预留字段1
      */
+    @TableField(value = "Str1")
     private String str1;
 
     /**
      * 预留字段2
      */
+    @TableField(value = "Str2")
     private String str2;
 
     /**
      * 预留字段3
      */
+    @TableField(value = "Str3")
     private String str3;
 
     /**
      * 预留字段4
      */
+    @TableField(value = "Str4")
     private String str4;
 
     /**
      * 预留字段5
      */
+    @TableField(value = "Str5")
     private String str5;
 
     /**
      * 创建人ID
      */
-    private Object creatorid;
+    @TableField(value = "CreatorId")
+    private Object creatorId;
 
     /**
      * 创建人名称
      */
-    private String creatorname;
+    @TableField(value = "CreatorName")
+    private String creatorName;
 
     /**
      * 最新修改人ID
      */
-    private Object lastmodifierid;
+    @TableField(value = "LastModifierId")
+    private Object lastModifierId;
 
     /**
      * 最新修改人名称
      */
-    private String lastmodifiername;
+    @TableField(value = "LastModifierName")
+    private String lastModifierName;
 
     /**
      * 创建时间戳13位
      */
-    private Long creationtime;
+    @TableField(value = "CreationTime")
+    private Long creationTime;
 
     /**
      * 修改时间戳13位
      */
-    private Long lastmodificationtime;
+    @TableField(value = "LastModificationTime")
+    private Long lastModificationTime;
 
     /**
      * 组织（客户）
      */
-    private Long organiztionid;
+    @TableField(value = "OrganiztionId")
+    private Long organiztionId;
 
     /**
      * 组织（供应商）
      */
-    private Long organiztionsupplierid;
+    @TableField(value = "OrganiztionSupplierId")
+    private Long organiztionSupplierId;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
