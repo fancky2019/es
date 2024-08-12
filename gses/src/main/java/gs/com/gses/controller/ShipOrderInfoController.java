@@ -19,11 +19,14 @@ package gs.com.gses.controller;
 import gs.com.gses.aspect.RepeatPermission;
 import gs.com.gses.model.elasticsearch.DemoProduct;
 import gs.com.gses.model.elasticsearch.ShipOrderInfo;
+import gs.com.gses.model.entity.MqMessage;
 import gs.com.gses.model.entity.WmsTask;
 import gs.com.gses.model.request.DemoProductRequest;
 import gs.com.gses.model.request.ShipOrderInfoRequest;
 import gs.com.gses.model.response.MessageResult;
 import gs.com.gses.model.response.PageData;
+import gs.com.gses.rabbitMQ.RabbitMQConfig;
+import gs.com.gses.rabbitMQ.producer.DirectExchangeProducer;
 import gs.com.gses.service.OutBoundOrderService;
 import gs.com.gses.service.WmsTaskService;
 import gs.com.gses.service.elasticsearch.ESDemoProductService;
@@ -43,6 +46,12 @@ public class ShipOrderInfoController {
     private ESDemoProductService esDemoProductService;
     @Autowired
     private OutBoundOrderService outBoundOrderService;
+
+
+    @Autowired
+    private DirectExchangeProducer directExchangeProducer;
+    @Autowired
+    private RabbitMQConfig rabbitMQConfig;
 
 
     @GetMapping("/hello")
@@ -92,5 +101,17 @@ public class ShipOrderInfoController {
         return MessageResult.success();
     }
 
+
+    @PostMapping("/rabbitMqTest")
+    public MessageResult<Void> rabbitMqTest() throws Exception {
+        MqMessage mqMessage =new MqMessage();
+        mqMessage.setMsgId("1111111");
+        mqMessage.setMsgContent("124");
+        mqMessage.setExchange(RabbitMQConfig.DIRECT_EXCHANGE);
+        mqMessage.setQueue(RabbitMQConfig.DIRECT_QUEUE_NAME);
+        mqMessage.setRouteKey(RabbitMQConfig.DIRECT_ROUTING_KEY);
+        directExchangeProducer.produce(mqMessage);
+        return MessageResult.success();
+    }
 
 }
