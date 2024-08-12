@@ -4,11 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import gs.com.gses.elasticsearch.ShipOrderInfoRepository;
-import gs.com.gses.model.elasticsearch.DemoProduct;
 import gs.com.gses.model.elasticsearch.InventoryInfo;
 import gs.com.gses.model.elasticsearch.ShipOrderInfo;
 import gs.com.gses.model.entity.*;
-import gs.com.gses.model.request.DemoProductRequest;
 import gs.com.gses.model.request.ShipOrderInfoRequest;
 import gs.com.gses.model.response.PageData;
 import gs.com.gses.service.*;
@@ -22,8 +20,6 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
@@ -34,7 +30,6 @@ import org.springframework.data.elasticsearch.core.document.Document;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StopWatch;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -102,6 +97,10 @@ public class OutBoundOrderServiceImpl implements OutBoundOrderService {
 
     @Autowired
     private PackageUnitService packageUnitService;
+
+    @Autowired
+    private WarehouseService warehouseService;
+
 
     @Override
     public void taskComplete(long wmsTaskId) throws Exception {
@@ -482,7 +481,14 @@ public class OutBoundOrderServiceImpl implements OutBoundOrderService {
     }
 
     @Override
-    public void initFromDb() {
+    public void initInventoryInfoFromDb() {
+        IndexOperations indexOperations = elasticsearchRestTemplate.indexOps(InventoryInfo.class);
+
+        if (indexOperations.exists()) {
+            indexOperations.delete();
+
+        }
+        createIndexAndMapping(InventoryInfo.class);
         long count = this.inventoryItemDetailService.count();
         int step = 1000;
         long times = count / step;
@@ -496,6 +502,8 @@ public class OutBoundOrderServiceImpl implements OutBoundOrderService {
         while (times > 0) {
             times--;
             page.setCurrent(++pageIndex);
+            List<InventoryInfo> inventoryInfos = new ArrayList<>();
+
             IPage<InventoryItemDetail> inventoryItemDetailPage = this.inventoryItemDetailService.page(page);
             List<InventoryItemDetail> inventoryItemDetailList = inventoryItemDetailPage.getRecords();
             List<Long> inventoryItemIdList = inventoryItemDetailList.stream().map(p -> p.getInventoryItemId()).distinct().collect(Collectors.toList());
@@ -505,6 +513,10 @@ public class OutBoundOrderServiceImpl implements OutBoundOrderService {
             //material
             List<Long> materialIdList = inventoryItemDetailList.stream().map(p -> p.getMaterialId()).distinct().collect(Collectors.toList());
             List<Material> materialList = this.materialService.listByIds(materialIdList);
+
+            List<Long> whIdList = inventoryList.stream().map(p -> p.getWhid()).distinct().collect(Collectors.toList());
+            List<Warehouse> warehouseList = this.warehouseService.listByIds(whIdList);
+
 
             List<Long> locationIdList = inventoryList.stream().map(p -> p.getLocationId()).distinct().collect(Collectors.toList());
             List<Location> locationList = this.locationService.listByIds(locationIdList);
@@ -526,7 +538,7 @@ public class OutBoundOrderServiceImpl implements OutBoundOrderService {
             List<Long> packageUnitIdList = inventoryItemDetailList.stream().map(p -> p.getPackageUnitId()).distinct().collect(Collectors.toList());
             List<PackageUnit> packageUnitList = this.packageUnitService.listByIds(packageUnitIdList);
 
-            List<InventoryInfo> inventoryInfos = new ArrayList<>();
+
             InventoryInfo inventoryInfo = null;
             for (InventoryItemDetail inventoryItemDetail : inventoryItemDetailList) {
                 inventoryInfo = new InventoryInfo();
@@ -537,13 +549,27 @@ public class OutBoundOrderServiceImpl implements OutBoundOrderService {
                 Zone zone = zoneList.stream().filter(p -> p.getId().equals(laneway.getZoneId())).findFirst().orElse(null);
                 Material material = materialList.stream().filter(p -> p.getId().equals(inventoryItemDetail.getMaterialId())).findFirst().orElse(null);
 
+                Warehouse warehouse = warehouseList.stream().filter(p -> p.getId().equals(inventory.getWhid())).findFirst().orElse(null);
+                if (warehouse != null) {
+                    inventoryInfo.setWhid(warehouse.getId());
+                    inventoryInfo.setWhCode(warehouse.getXCode());
+                }
 
+                if (location == null) {
+                    continue;
+                }
                 inventoryInfo.setLocationId(location.getId());
                 inventoryInfo.setLocationCode(location.getXCode());
-                inventoryInfo.setLanewayId(laneway.getId());
-                inventoryInfo.setLanewayCode(laneway.getXCode());
-                inventoryInfo.setZoneId(zone.getId());
-                inventoryInfo.setZoneCode(zone.getXCode());
+                if (laneway != null) {
+                    inventoryInfo.setLanewayId(laneway.getId());
+                    inventoryInfo.setLanewayCode(laneway.getXCode());
+                }
+
+                if (zone != null) {
+                    inventoryInfo.setZoneId(zone.getId());
+                    inventoryInfo.setZoneCode(zone.getXCode());
+                }
+
 
                 //inventory
                 inventoryInfo.setPallet(inventory.getPallet());
@@ -714,18 +740,23 @@ public class OutBoundOrderServiceImpl implements OutBoundOrderService {
                 inventoryInfo.setPositionCode(inventoryItemDetail.getPositionCode());
                 inventoryInfo.setPositionLevel(inventoryItemDetail.getPositionLevel());
                 inventoryInfo.setPackageMethod(inventoryItemDetail.getPackageMethod());
+
                 inventoryInfos.add(inventoryInfo);
             }
-
+            elasticsearchRestTemplate.save(inventoryInfos);
         }
+
+//        long size = inventoryInfos.size();
     }
 
     /**
      * 创建索引及映射
      * @return
      */
-    public Boolean createIndexAndMapping() {
-        IndexOperations indexOperations = elasticsearchRestTemplate.indexOps(ShipOrderInfo.class);
+    public <T> Boolean createIndexAndMapping(Class<T> clas) {
+
+
+        IndexOperations indexOperations = elasticsearchRestTemplate.indexOps(clas);
         //创建索引
         boolean result = indexOperations.create();
         if (result) {

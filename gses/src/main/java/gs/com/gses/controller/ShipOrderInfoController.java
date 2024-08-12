@@ -30,8 +30,6 @@ import gs.com.gses.service.elasticsearch.ESDemoProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  *
  */
@@ -84,6 +82,13 @@ public class ShipOrderInfoController {
     @PostMapping("/deleteShipOrderInfo")
     public MessageResult<Void> deleteShipOrderInfo() throws Exception {
         outBoundOrderService.deleteShipOrderInfo();
+        return MessageResult.success();
+    }
+
+
+    @PostMapping("/initInventoryInfoFromDb")
+    public MessageResult<Void> initInventoryInfoFromDb() throws Exception {
+        outBoundOrderService.initInventoryInfoFromDb();
         return MessageResult.success();
     }
 

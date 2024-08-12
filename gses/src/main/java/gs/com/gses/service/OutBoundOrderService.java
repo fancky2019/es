@@ -5,8 +5,6 @@ import gs.com.gses.model.request.ShipOrderInfoRequest;
 import gs.com.gses.model.response.PageData;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public interface OutBoundOrderService {
     void taskComplete(long wmsTaskId) throws Exception;
@@ -17,5 +15,5 @@ public interface OutBoundOrderService {
 
     boolean deleteShipOrderInfo() ;
 
-    void  initFromDb()  ;
+    void initInventoryInfoFromDb()  ;
 }
