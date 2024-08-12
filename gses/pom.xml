@@ -31,6 +31,7 @@
         <pagehelper.version>2.1.0</pagehelper.version>
         <easyexcel.version>3.3.4</easyexcel.version>
         <xxl-job.version>2.4.1</xxl-job.version>
+        <flink.version>1.19.0</flink.version>
     </properties>
     <dependencies>
         <dependency>
@@ -206,6 +207,93 @@
 <!--            <groupId>org.springframework.integration</groupId>-->
 <!--            <artifactId>spring-integration-mqtt</artifactId>-->
 <!--        </dependency>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--        flink               -->
+
+        <!--        java.lang.ClassNotFoundException: org.apache.flink.connector.base.source.reader.RecordEmitter-->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-connector-base</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+
+
+
+        <!--       此依赖包含返回的数据处理结构-->
+        <!-- https://mvnrepository.com/artifact/com.ververica/flink-connector-mysql-cdc -->
+        <dependency>
+            <groupId>com.ververica</groupId>
+            <artifactId>flink-connector-mysql-cdc</artifactId>
+            <version>3.0.1</version>
+            <!--            <scope>provided</scope>-->
+        </dependency>
+
+
+        <!--         https://mvnrepository.com/artifact/com.ververica/flink-sql-connector-mysql-cdc-->
+        <dependency>
+            <groupId>com.ververica</groupId>
+            <artifactId>flink-sql-connector-mysql-cdc</artifactId>
+            <version>3.0.1</version>
+            <!--            <scope>provided</scope>-->
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-streaming-java</artifactId>
+            <version>${flink.version}</version>
+            <!--            <scope>provided</scope>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-clients</artifactId>
+            <version>${flink.version}</version>
+            <!--            <scope>provided</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-runtime</artifactId>
+            <version>${flink.version}</version>
+            <!--            <scope>provided</scope>-->
+        </dependency>
+
+
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.flink</groupId>-->
+        <!--            <artifactId>flink-java</artifactId>-->
+        <!--            <version>${flink.version}</version>-->
+        <!--            <scope>provided</scope>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.flink</groupId>-->
+        <!--            <artifactId>flink-table-planner_${scala.binary.version}</artifactId>-->
+        <!--            <version>${flink.version}</version>-->
+        <!--            <scope>provided</scope>-->
+        <!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-core</artifactId>
+            <version>${flink.version}</version>
+            <!--            <scope>provided</scope>-->
+        </dependency>
+
+
+
+
 
 
     </dependencies>

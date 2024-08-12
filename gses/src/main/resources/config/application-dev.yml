@@ -14,14 +14,18 @@ spring:
     name: springBootProject
 
   datasource:
-    # sqlserver
-#    url: jdbc:sqlserver://gen-song.vip,13999;DatabaseName=GensongWms3DB_test05;integratedSecurity=true;encrypt=true;trustServerCertificate=true
-    url: jdbc:sqlserver://10.12.3.211;DatabaseName=GensongWms3DB_test05;trustServerCertificate=true
-        #url: jdbc:sqlserver://localhost:1433;DatabaseName=RABC
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    username: sa
-    password: gen@song123
+#    # sqlserver
+##    url: jdbc:sqlserver://gen-song.vip,13999;DatabaseName=GensongWms3DB_test05;integratedSecurity=true;encrypt=true;trustServerCertificate=true
+#    url: jdbc:sqlserver://10.12.3.211;DatabaseName=GensongWms3DB_test05;trustServerCertificate=true
+#        #url: jdbc:sqlserver://localhost:1433;DatabaseName=RABC
+#    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#    username: sa
+#    password: gen@song123
 
+    url: jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&characterEncoding=utf8&useSSL=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowMultiQueries=true&rewriteBatchedStatements=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
 #    #mysql
 #    #具体参见类DynamicDataSourceAspect 说明
 #    #不用此默认，默认就是写库,多数据源用jdbcUrl，不是url,spring 默认用的是url，用多数据源用url会报错。

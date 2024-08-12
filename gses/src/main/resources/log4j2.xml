@@ -62,7 +62,8 @@
         <logger name="io.lettuce.core" level="INFO"/>
         <logger name="org.apache" level="INFO"/>
         <logger name="io.netty.channel.nio" level="INFO"/>
-
+        <logger name="io.debezium" level="INFO"/>
+        <logger name=" com.ververica.cdc" level="INFO"/>
         <!--        异步-->
         <AsyncRoot level="all">
             <appender-ref ref="Console"/>
