@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-public class ShipOrderInfoRequest  extends Page{
+public class ShipOrderInfoRequest  extends EsRequestPage{
     private Long applyShipOrderId;
     private String applyShipOrderCode;
     private Long applyShipOrderItemId;

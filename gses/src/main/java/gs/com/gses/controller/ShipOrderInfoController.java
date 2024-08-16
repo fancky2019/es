@@ -33,6 +33,9 @@ import gs.com.gses.service.elasticsearch.ESDemoProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.LinkedHashMap;
+
 /**
  *
  */
@@ -77,8 +80,9 @@ public class ShipOrderInfoController {
         return MessageResult.success();
     }
 
+    //get 可以在body 内设置参数，但是通常用post 方法
     @GetMapping("/getShipOrderInfoList")
-    public MessageResult<PageData<ShipOrderInfo>> getShipOrderInfoList(ShipOrderInfoRequest request) {
+    public MessageResult<PageData<ShipOrderInfo>> getShipOrderInfoList(@RequestBody ShipOrderInfoRequest request) throws Exception {
         return MessageResult.success(outBoundOrderService.search(request));
     }
 
@@ -100,6 +104,33 @@ public class ShipOrderInfoController {
         outBoundOrderService.initInventoryInfoFromDb();
         return MessageResult.success();
     }
+
+
+    @GetMapping("/aggregationTopBucketQuery")
+    public MessageResult<Void> aggregationTopBucketQuery(ShipOrderInfoRequest request) throws Exception {
+        outBoundOrderService.aggregationTopBucketQuery(request);
+        return MessageResult.success();
+    }
+
+    @GetMapping("/scriptQuery")
+    public MessageResult<Void> scriptQuery() throws Exception {
+        //   shipOrderInfoService.scriptQuery();
+        return MessageResult.success();
+    }
+
+    @PostMapping("/aggregationStatisticsQuery")
+    public MessageResult<LinkedHashMap<String, BigDecimal>> aggregationStatisticsQuery(@RequestBody ShipOrderInfoRequest request) throws Exception {
+        LinkedHashMap<String, BigDecimal> map = outBoundOrderService.aggregationStatisticsQuery(request);
+        return MessageResult.success(map);
+    }
+
+    @GetMapping("/dateHistogramStatisticsQuery")
+    public MessageResult<LinkedHashMap<Object, Double>> dateHistogramStatisticsQuery(ShipOrderInfoRequest request) throws Exception {
+        LinkedHashMap<Object, Double> map = outBoundOrderService.dateHistogramStatisticsQuery(request);
+        return MessageResult.success(map);
+    }
+
+
 
 
     @PostMapping("/rabbitMqTest")
