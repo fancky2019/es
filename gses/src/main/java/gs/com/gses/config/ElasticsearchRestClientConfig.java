@@ -94,7 +94,8 @@ public class ElasticsearchRestClientConfig extends AbstractElasticsearchConfigur
 
         final ClientConfiguration clientConfiguration = ClientConfiguration.builder()
                //127 连不上就换IP 127.0.0.1   192.168.8.85
-                .connectedTo("127.0.0.1:9200")
+//                .connectedTo("127.0.0.1:9200")
+                .connectedTo("10.84.5.252:9200")
                 //ES8需要下面的SSL配置
 //                .usingSsl(this.getSSLContext(certificateBase64))
 //                .withBasicAuth("elastic", "==Qok*0raTpVzjnvv_dr")

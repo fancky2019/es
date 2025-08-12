@@ -31,7 +31,9 @@
         <pagehelper.version>2.1.0</pagehelper.version>
         <easyexcel.version>3.3.4</easyexcel.version>
         <xxl-job.version>2.4.1</xxl-job.version>
-        <flink.version>1.19.0</flink.version>
+        <redisson.version>3.17.7</redisson.version>
+<!--        <flink.version>1.19.0</flink.version>-->
+        <flink.version>1.20.1</flink.version>
     </properties>
     <dependencies>
         <dependency>
@@ -234,18 +236,19 @@
         <!--       此依赖包含返回的数据处理结构-->
         <!-- https://mvnrepository.com/artifact/com.ververica/flink-connector-mysql-cdc -->
         <dependency>
-            <groupId>com.ververica</groupId>
+            <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-mysql-cdc</artifactId>
-            <version>3.0.1</version>
+<!--            <version>3.0.1</version>-->
+            <version>3.3.0</version>
             <!--            <scope>provided</scope>-->
         </dependency>
 
 
         <!--         https://mvnrepository.com/artifact/com.ververica/flink-sql-connector-mysql-cdc-->
         <dependency>
-            <groupId>com.ververica</groupId>
+            <groupId>org.apache.flink</groupId>
             <artifactId>flink-sql-connector-mysql-cdc</artifactId>
-            <version>3.0.1</version>
+            <version>3.3.0</version>
             <!--            <scope>provided</scope>-->
         </dependency>
 
@@ -339,7 +342,7 @@
                 <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>gs.com.gses.GsesApplication</mainClass>
-                    <skip>true</skip>
+<!--                    <skip>true</skip>-->
                 </configuration>
                 <executions>
                     <execution>

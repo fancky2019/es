@@ -2,9 +2,9 @@ package gs.com.gses.flink;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ververica.cdc.debezium.DebeziumDeserializationSchema;
 import io.debezium.data.Envelope;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
+import org.apache.flink.cdc.debezium.DebeziumDeserializationSchema;
 import org.apache.flink.util.Collector;
 import org.apache.kafka.connect.data.Field;
 import org.apache.kafka.connect.data.Schema;
@@ -38,14 +38,23 @@ public class MysqlDeserialization implements DebeziumDeserializationSchema<DataC
     public void deserialize(SourceRecord sourceRecord, Collector<DataChangeInfo> collector) throws JsonProcessingException {
         String topic = sourceRecord.topic();
         String[] fields = topic.split("\\.");
+        //列变更长度1，value有变更内容
+        if(fields.length != 3){
+            return;
+        }
+        //1.获取库名 表名
+//        String database = fields[1];
+//        String tableName = fields[2];
+        //2.获取操作后的数据
+//        Struct after = (Struct) source
         String database = fields[1];
         String tableName = fields[2];
         Struct struct = (Struct) sourceRecord.value();
         final Struct source = struct.getStruct(SOURCE);
         DataChangeInfo dataChangeInfo = new DataChangeInfo();
-        ObjectMapper objectMapper=new ObjectMapper();
-      String beforeJson=  objectMapper.writeValueAsString(getJsonObject(struct, BEFORE));
-        String afterJson=  objectMapper.writeValueAsString(getJsonObject(struct, AFTER));
+        ObjectMapper objectMapper = new ObjectMapper();
+        String beforeJson = objectMapper.writeValueAsString(getJsonObject(struct, BEFORE));
+        String afterJson = objectMapper.writeValueAsString(getJsonObject(struct, AFTER));
 
 
 //        dataChangeInfo.setBeforeData(getJsonObject(struct, BEFORE).toJSONString());
@@ -74,9 +83,9 @@ public class MysqlDeserialization implements DebeziumDeserializationSchema<DataC
     /**
      * 从元数据获取出变更之前或之后的数据
      */
-    private HashMap<String,Object> getJsonObject(Struct value, String fieldElement) {
+    private HashMap<String, Object> getJsonObject(Struct value, String fieldElement) {
         Struct element = value.getStruct(fieldElement);
-        HashMap<String,Object> jsonObject = new HashMap();
+        HashMap<String, Object> jsonObject = new HashMap();
         if (element != null) {
             Schema afterSchema = element.schema();
             List<Field> fieldList = afterSchema.fields();

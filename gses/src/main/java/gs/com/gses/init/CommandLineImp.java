@@ -1,17 +1,15 @@
 package gs.com.gses.init;
 
-import com.ververica.cdc.connectors.mysql.source.MySqlSource;
-import com.ververica.cdc.connectors.mysql.table.StartupOptions;
 import gs.com.gses.flink.DataChangeInfo;
 import gs.com.gses.flink.DataChangeSink;
 import gs.com.gses.flink.MysqlDeserialization;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.cdc.connectors.mysql.source.MySqlSource;
+import org.apache.flink.cdc.connectors.mysql.table.StartupOptions;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.Order;
@@ -60,13 +58,35 @@ public class CommandLineImp implements CommandLineRunner {
 //                    .deserializer(new JsonDebeziumDeserializationSchema())
                 .deserializer(new MysqlDeserialization())
                 // 启动模式；关于启动模式下面详细介绍
-                .startupOptions(StartupOptions.initial())
+//                .startupOptions(StartupOptions.initial())
+                //时间戳格式注意mq消费时候去重，重启时候要把时间设置在修改字段的时间之后
+                .startupOptions(StartupOptions.timestamp(1754961251446L))
+                // 时间戳模式添加以下Debezium配置
+//                .debeziumProperties(PropertiesUtil.createDebeziumProperties())
+
                 .build();
 //            RichSinkFunction richSinkFunction=new DataChangeSink();
 //        RichSinkFunction richSinkFunction = new DataChangeSink();
 //            RichSinkFunction richSinkFunction=new PersonDeserialization();
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
+
+//        // 增强的 Checkpoint 配置
+//        env.enableCheckpointing(30000, CheckpointingMode.EXACTLY_ONCE); // 30秒间隔
+//        //"file:///D:/flinkcdc/checkpoints";
+//        env.getCheckpointConfig().setCheckpointStorage("file:///D:/flinkcdc/checkpoints"); // 明确指定存储路径
+//        env.getCheckpointConfig().setMinPauseBetweenCheckpoints(5000); // 最小间隔5秒
+//        env.getCheckpointConfig().setCheckpointTimeout(600000); // 10分钟超时
+//        env.getCheckpointConfig().setTolerableCheckpointFailureNumber(5); // 允许失败次数
+//        env.getCheckpointConfig().enableUnalignedCheckpoints(); // 启用非对齐checkpoint(减少背压影响)
+//
+//// 重启策略配置
+//        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(
+//                3, // 最大尝试次数
+//                Time.of(30, TimeUnit.SECONDS) // 重启间隔
+//        ));
+
 
         // enable checkpoint
         env.enableCheckpointing(3000);
